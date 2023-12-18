@@ -14,6 +14,7 @@ public class UpdateArticleUseCase implements BiFunction<String, Article, Mono<Ar
 
     @Override
     public Mono<Article> apply(String id, Article article) {
+        System.out.println("INFO: Request to update an Article by id: "+id);
         return articleGateway.updateArticle(id, article);
     }
 

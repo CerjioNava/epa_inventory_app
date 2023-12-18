@@ -14,6 +14,7 @@ public class SaveArticleUseCase implements Function<Article, Mono<Article>> {
 
     @Override
     public Mono<Article> apply(Article article) {
+        System.out.println("INFO: Request to save an Article: "+article);
         return articleGateway.saveArticle(article);
     }
 

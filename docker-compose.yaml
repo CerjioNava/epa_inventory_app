@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    links:
+      - mymongodb
+    env_file:
+      - .env
+    networks:
+      - default
+
+  mymongodb:
+    image: mongo:latest
+    container_name: ${MONGO_CONTAINER}
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - "${MONGO_PORT}:${MONGO_PORT}"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - default
+
+volumes:
+  mongo_data:
+
+networks:
+  default:
+    name: epa_inventory_app_default
+    driver: bridge

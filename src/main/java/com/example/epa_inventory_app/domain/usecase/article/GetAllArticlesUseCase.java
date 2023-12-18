@@ -14,6 +14,7 @@ public class GetAllArticlesUseCase implements Supplier<Flux<Article>> {
 
     @Override
     public Flux<Article> get() {
+        System.out.println("INFO: Request to get all articles");
         return articleGateway.getAllArticles();
     }
 

@@ -13,6 +13,7 @@ public class DeleteArticleUseCase implements Function<String, Mono<Void>> {
 
     @Override
     public Mono<Void> apply(String id) {
+        System.out.println("INFO: Request to delete an Article by id: "+id);
         return articleGateway.deleteArticleById(id);
     }
 

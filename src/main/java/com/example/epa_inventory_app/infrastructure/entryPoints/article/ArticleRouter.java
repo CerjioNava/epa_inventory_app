@@ -95,18 +95,15 @@ public class ArticleRouter {
     @Bean
     public RouterFunction<ServerResponse> deleteArticle(DeleteArticleUseCase deleteArticleUseCase) {
         return route(
-                DELETE("/api/articles/{id}").and(accept(MediaType.APPLICATION_JSON)),
-                request -> request.bodyToMono(Article.class)
-                        .flatMap(article ->
-                                deleteArticleUseCase.apply(request.pathVariable("id"))
-                                        .flatMap(result -> ServerResponse
-                                                .status(HttpStatus.OK)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .bodyValue("Successfully deleted article with id: "+request.pathVariable("id")))
-                                        .onErrorResume(throwable -> ServerResponse
-                                                .status(HttpStatus.BAD_REQUEST)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .bodyValue(throwable.getMessage())))
+                DELETE("/api/articles/{id}"),
+                request -> deleteArticleUseCase.apply(request.pathVariable("id"))
+                        .thenReturn(ServerResponse.ok()
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue("Deleted article with id: " + request.pathVariable("id")))
+                        .flatMap(responseMono -> responseMono)
+                        .onErrorResume(throwable -> ServerResponse.badRequest()
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(throwable.getMessage()))
         );
     }
 

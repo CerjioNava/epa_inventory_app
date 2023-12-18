@@ -14,6 +14,7 @@ public class GetArticleByIdUseCase implements Function<String, Mono<Article>> {
 
     @Override
     public Mono<Article> apply(String id) {
+        System.out.println("INFO: Request to get an Article by id: "+id);
         return articleGateway.getArticleById(id);
     }
 
