@@ -9,7 +9,7 @@ public interface ArticleGateway {
     Flux<Article> getAllArticles();
     Mono<Article> getArticleById(String id);
     Mono<Article> saveArticle(Article article);
-    Mono<Article> updateArticle(Article article);
-    Mono<Article> deleteArticleById(String id);
+    Mono<Article> updateArticle(String id, Article article);
+    Mono<Void> deleteArticleById(String id);
 
 }
