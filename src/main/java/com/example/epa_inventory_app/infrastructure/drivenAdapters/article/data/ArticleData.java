@@ -1,4 +1,4 @@
-package com.example.epa_inventory_app.infrastructure.drivenAdapters.mongo.article.data;
+package com.example.epa_inventory_app.infrastructure.drivenAdapters.article.data;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

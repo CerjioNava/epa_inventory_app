@@ -15,5 +15,5 @@ public class DeleteArticleUseCase implements Function<String, Mono<Void>> {
     public Mono<Void> apply(String id) {
         return articleGateway.deleteArticleById(id);
     }
-    
+
 }

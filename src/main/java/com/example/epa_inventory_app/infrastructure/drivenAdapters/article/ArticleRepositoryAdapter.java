@@ -1,8 +1,8 @@
-package com.example.epa_inventory_app.infrastructure.drivenAdapters.mongo.article;
+package com.example.epa_inventory_app.infrastructure.drivenAdapters.article;
 
 import com.example.epa_inventory_app.domain.model.article.Article;
 import com.example.epa_inventory_app.domain.model.article.gateway.ArticleGateway;
-import com.example.epa_inventory_app.infrastructure.drivenAdapters.mongo.article.data.ArticleData;
+import com.example.epa_inventory_app.infrastructure.drivenAdapters.article.data.ArticleData;
 import lombok.RequiredArgsConstructor;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
