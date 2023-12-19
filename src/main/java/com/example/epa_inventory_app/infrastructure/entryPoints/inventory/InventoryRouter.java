@@ -58,15 +58,6 @@ public class InventoryRouter {
                                 .status(HttpStatus.BAD_REQUEST)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .bodyValue(throwable.getMessage()))
-//                request -> getInventoryByIdUseCase.apply(request.pathVariable("id"))
-//                        .flatMap(inventory -> ServerResponse
-//                                .ok()
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .bodyValue(inventory))
-//                        .onErrorResume(throwable -> ServerResponse
-//                                .status(HttpStatus.BAD_REQUEST)
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .bodyValue(throwable.getMessage()))
         );
     }
 
