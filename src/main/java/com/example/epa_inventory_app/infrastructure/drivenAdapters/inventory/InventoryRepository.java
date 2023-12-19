@@ -11,7 +11,4 @@ import java.util.List;
 
 public interface InventoryRepository extends ReactiveMongoRepository<InventoryData, String> {
     Flux<InventoryData> findAllBy(Pageable pageable);
-
-    Flux<Inventory> saveAll(List<Inventory> inventoryList);
-
 }

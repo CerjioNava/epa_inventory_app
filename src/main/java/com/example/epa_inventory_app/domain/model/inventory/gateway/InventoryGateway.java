@@ -13,7 +13,6 @@ public interface InventoryGateway {
     Flux<Inventory> getAllInventory(Pageable pageable);
     Mono<Inventory> getInventoryById(String id);
     Mono<Inventory> saveInventory(Inventory inventory);
-    Flux<Inventory> saveInventoryList(List<Inventory> inventoryList);
     Mono<Inventory> updateInventory(String id, Inventory inventory);
     Mono<Void> deleteInventoryById(String id);
 

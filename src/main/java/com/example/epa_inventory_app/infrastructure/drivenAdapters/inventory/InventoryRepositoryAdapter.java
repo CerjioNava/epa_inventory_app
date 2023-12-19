@@ -44,11 +44,6 @@ public class InventoryRepositoryAdapter implements InventoryGateway {
     }
 
     @Override
-    public Flux<Inventory> saveInventoryList(List<Inventory> inventoryList) {
-        return repository.saveAll(inventoryList);
-    }
-
-    @Override
     public Mono<Inventory> updateInventory(String id, Inventory inventory) {
         return repository
                 .findById(id)

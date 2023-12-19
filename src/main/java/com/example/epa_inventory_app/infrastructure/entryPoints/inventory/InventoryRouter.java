@@ -88,24 +88,25 @@ public class InventoryRouter {
         );
     }
 
-//    @Bean
-//    public RouterFunction<ServerResponse> saveInventoryBatch(SaveInventoryListUseCase saveInventoryListUseCase) {
-//        return route(
-//                POST("/api/inventory/list").and(accept(MediaType.APPLICATION_JSON)),
-//                request -> request.bodyToFlux(Inventory.class)
-//                        .collectList()
-//                        .flatMap(inventories  ->
-//                                saveInventoryListUseCase.apply(inventories)
-//                                        .flatMap(result -> ServerResponse
-//                                                .status(HttpStatus.CREATED)
-//                                                .contentType(MediaType.APPLICATION_JSON)
-//                                                .bodyValue(result))
-//                                        .onErrorResume(throwable -> ServerResponse
-//                                                .status(HttpStatus.BAD_REQUEST)
-//                                                .contentType(MediaType.APPLICATION_JSON)
-//                                                .bodyValue(throwable.getMessage())))
-//        );
-//    }
+    @Bean
+    public RouterFunction<ServerResponse> saveInventoryBatch(SaveInventoryUseCase saveInventoryUseCase) {
+        return route(
+                POST("/api/inventory/list").and(accept(MediaType.APPLICATION_JSON)),
+                request -> request.bodyToFlux(Inventory.class)
+                        .flatMap(inventory  ->
+                                saveInventoryUseCase.apply(inventory)
+                                        .flatMap(result -> ServerResponse
+                                                .status(HttpStatus.CREATED)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .bodyValue(result))
+                                        .onErrorResume(throwable -> ServerResponse
+                                                .status(HttpStatus.BAD_REQUEST)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .bodyValue(throwable.getMessage())))
+                        .collectList()
+                        .flatMap(result -> ServerResponse.ok().bodyValue(result))
+        );
+    }
 
     @Bean
     public RouterFunction<ServerResponse> updateInventory(UpdateInventoryUseCase updateInventoryUseCase) {
