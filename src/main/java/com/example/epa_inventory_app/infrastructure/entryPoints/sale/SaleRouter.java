@@ -66,7 +66,7 @@ public class SaleRouter {
     @Bean
     public RouterFunction<ServerResponse> saveRetailSale(SaveRetailSaleUseCase saveRetailSaleUseCase) {
         return route(
-                POST("/api/sale").and(accept(MediaType.APPLICATION_JSON)),
+                POST("/api/sale/retail").and(accept(MediaType.APPLICATION_JSON)),
                 request -> request.bodyToMono(Sale.class)
                         .flatMap(sale ->
                                 saveRetailSaleUseCase.apply(sale)
@@ -84,7 +84,7 @@ public class SaleRouter {
     @Bean
     public RouterFunction<ServerResponse> saveWholeSale(SaveWholeSaleUseCase saveWholeSaleUseCase) {
         return route(
-                POST("/api/sale").and(accept(MediaType.APPLICATION_JSON)),
+                POST("/api/sale/whole").and(accept(MediaType.APPLICATION_JSON)),
                 request -> request.bodyToMono(Sale.class)
                         .flatMap(sale ->
                                 saveWholeSaleUseCase.apply(sale)

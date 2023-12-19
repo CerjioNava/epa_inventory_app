@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @ToString
 public class SaleDetail {
 
-    private String id;
     private String articleId;
     private Integer quantity;
     private BigDecimal amount;

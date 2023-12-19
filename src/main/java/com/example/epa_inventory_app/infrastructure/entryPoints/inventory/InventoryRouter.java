@@ -91,20 +91,18 @@ public class InventoryRouter {
     @Bean
     public RouterFunction<ServerResponse> saveInventoryBatch(SaveInventoryUseCase saveInventoryUseCase) {
         return route(
-                POST("/api/inventory/list").and(accept(MediaType.APPLICATION_JSON)),
+                POST("/api/inventory/batch").and(accept(MediaType.APPLICATION_JSON)),
                 request -> request.bodyToFlux(Inventory.class)
-                        .flatMap(inventory  ->
-                                saveInventoryUseCase.apply(inventory)
-                                        .flatMap(result -> ServerResponse
-                                                .status(HttpStatus.CREATED)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .bodyValue(result))
-                                        .onErrorResume(throwable -> ServerResponse
-                                                .status(HttpStatus.BAD_REQUEST)
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .bodyValue(throwable.getMessage())))
+                        .flatMap(saveInventoryUseCase)
                         .collectList()
-                        .flatMap(result -> ServerResponse.ok().bodyValue(result))
+                        .flatMap(result -> ServerResponse
+                                .status(HttpStatus.CREATED)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(result))
+                        .onErrorResume(throwable -> ServerResponse
+                                .status(HttpStatus.BAD_REQUEST)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(throwable.getMessage()))
         );
     }
 

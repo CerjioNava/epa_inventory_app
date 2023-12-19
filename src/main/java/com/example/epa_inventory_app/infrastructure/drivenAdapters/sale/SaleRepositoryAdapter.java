@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 public class SaleRepositoryAdapter implements SaleGateway {
 
     private final SaleRepository repository;
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     @Override
     public Flux<Sale> getAllSales(Pageable pageable) {
