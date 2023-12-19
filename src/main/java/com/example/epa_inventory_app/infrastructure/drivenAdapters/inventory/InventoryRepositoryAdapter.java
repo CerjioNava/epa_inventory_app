@@ -11,6 +11,8 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class InventoryRepositoryAdapter implements InventoryGateway {
@@ -41,10 +43,10 @@ public class InventoryRepositoryAdapter implements InventoryGateway {
                 .map(inventoryData -> mapper.map(inventoryData, Inventory.class));
     }
 
-//    @Override
-//    public Flux<Inventory> saveInventoryList(Inventory inventory) {
-//        return null;
-//    }
+    @Override
+    public Flux<Inventory> saveInventoryList(List<Inventory> inventoryList) {
+        return repository.saveAll(inventoryList);
+    }
 
     @Override
     public Mono<Inventory> updateInventory(String id, Inventory inventory) {
