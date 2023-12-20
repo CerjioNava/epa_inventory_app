@@ -5,6 +5,7 @@ services:
     build: .
     ports:
       - "${APP_PORT}:${APP_PORT}"
+    restart: on-failure
     links:
       - mymongodb
     env_file:

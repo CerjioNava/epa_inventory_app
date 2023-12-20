@@ -43,8 +43,12 @@ public class InventoryRepositoryAdapter implements InventoryGateway {
         return repository
                 .save(mapper.map(inventory, InventoryData.class))
                 .map(inventoryData -> {
-                    publisher.publishInventoryLogs(inventory);
+                    publisher.publishInventoryLogs(inventoryData, "CREATE");
                     return mapper.map(inventoryData, Inventory.class);
+                })
+                .onErrorResume(throwable -> {
+                    publisher.publishInventoryError(mapper.map(inventory, InventoryData.class), "CREATE");
+                    return Mono.error(throwable);
                 });
     }
 
@@ -57,7 +61,14 @@ public class InventoryRepositoryAdapter implements InventoryGateway {
                     inventory.setId(inventoryData.getId());
                     return repository.save(mapper.map(inventory, InventoryData.class));
                 })
-                .map(inventoryData -> mapper.map(inventoryData, Inventory.class));
+                .map(inventoryData -> {
+                    publisher.publishInventoryLogs(inventoryData, "UPDATE");
+                    return mapper.map(inventoryData, Inventory.class);
+                })
+                .onErrorResume(throwable -> {
+                    publisher.publishInventoryError(mapper.map(inventory, InventoryData.class), "UPDATE");
+                    return Mono.error(throwable);
+                });
     }
 
     @Override
@@ -65,6 +76,15 @@ public class InventoryRepositoryAdapter implements InventoryGateway {
         return repository
                 .findById(id)
                 .switchIfEmpty(Mono.error(new RuntimeException("Unable to find and delete inventory with id: " + id)))
-                .flatMap(inventoryData -> repository.deleteById(inventoryData.getId()));
+                .flatMap(inventoryData -> {
+                    publisher.publishInventoryLogs(inventoryData, "DELETE");
+                    return repository.deleteById(inventoryData.getId());
+                })
+                .onErrorResume(throwable -> {
+                    InventoryData data = new InventoryData();
+                    data.setId(id);
+                    publisher.publishInventoryError(data, "DELETE");
+                    return Mono.error(throwable);
+                });
     }
 }
