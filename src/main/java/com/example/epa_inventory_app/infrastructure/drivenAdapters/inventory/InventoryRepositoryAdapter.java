@@ -3,6 +3,7 @@ package com.example.epa_inventory_app.infrastructure.drivenAdapters.inventory;
 import com.example.epa_inventory_app.domain.model.inventory.Inventory;
 import com.example.epa_inventory_app.domain.model.inventory.gateway.InventoryGateway;
 import com.example.epa_inventory_app.infrastructure.drivenAdapters.inventory.data.InventoryData;
+import com.example.epa_inventory_app.infrastructure.rabbitmq.handler.RabbitMqPublisher;
 import lombok.RequiredArgsConstructor;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,7 @@ public class InventoryRepositoryAdapter implements InventoryGateway {
 
     private final InventoryRepository repository;
     private final ObjectMapper mapper;
+    private final RabbitMqPublisher publisher;
 
     @Override
     public Flux<Inventory> getAllInventory(Pageable pageable) {
@@ -40,7 +42,10 @@ public class InventoryRepositoryAdapter implements InventoryGateway {
     public Mono<Inventory> saveInventory(Inventory inventory) {
         return repository
                 .save(mapper.map(inventory, InventoryData.class))
-                .map(inventoryData -> mapper.map(inventoryData, Inventory.class));
+                .map(inventoryData -> {
+                    publisher.publishInventoryLogs(inventory);
+                    return mapper.map(inventoryData, Inventory.class);
+                });
     }
 
     @Override
