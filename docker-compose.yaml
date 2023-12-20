@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app:
-    build: .
+    image: cerjionava/epa_inventory_app:latest
     ports:
       - "${APP_PORT}:${APP_PORT}"
     restart: on-failure
