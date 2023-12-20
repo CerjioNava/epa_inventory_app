@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epa-inventory-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: epa-inventory-app
+  template:
+    metadata:
+      labels:
+        role: epa-inventory-app
+    spec:
+      containers:
+        - name: epa-inventory-app
+          image: cerjionava/epa_inventory_app:latest
+          ports:
+            - containerPort: 8080
+      envFrom:
+        - configMapRef:
+            name: app-config.properties
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: epa-inventory-app-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    role: epa-inventory-app
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  APP_PORT: 8080
+  MONGO_CONTAINER: mymongodb
+  MONGO_HOST: mymongodb
+  MONGO_PORT: 27017
+  MONGO_DB: dbinventory
+  MONGO_USERNAME: user
+  MONGO_PASSWORD: pass
+  MONGO_AUTHUSER: admin
+  RABBIT_CONTAINER: myrabbitmq
+  RABBIT_HOST: myrabbitmq
+  RABBIT_USERNAME: guest
+  RABBIT_PASSWORD: guest
+  RABBIT_PORT: 5672
+  RABBIT_GUI_PORT: 15672
+  RABBIT_URI: amqp://$RABBIT_USERNAME:$RABBIT_PASSWORD@$RABBIT_HOST:$RABBIT_PORT
+  EXCHANGE_SALE: exchange-sale
+  ROUTING_KEY_SALE_ERROR: sale.routing.error
+  ROUTING_KEY_SALE_LOGS: sale.routing.logs
+  EXCHANGE_INVENTORY: exchange-inventory
+  ROUTING_KEY_INVENTORY_ERROR: inventory.routing.error
+  ROUTING_KEY_INVENTORY_LOGS: inventory.routing.logs
+
+
+
+
+
